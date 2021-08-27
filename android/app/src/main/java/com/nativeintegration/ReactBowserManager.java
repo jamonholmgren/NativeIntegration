@@ -13,6 +13,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.image.ReactImageView;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -34,17 +35,15 @@ public class ReactBowserManager extends SimpleViewManager<ReactImageView> {
     ReactApplicationContext mCallerContext;
     private ImgStartListener imgStartListener;
 
-    public Map getExportedCustomBubblingEventTypeConstants() {
-        return MapBuilder.builder()
-                .put(
-                        "pressed",
-                        MapBuilder.of(
-                                "phasedRegistrationNames",
-                                MapBuilder.of("bubbled", "onPress")))
+    @Nullable @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+                .put("onPress",
+                        MapBuilder.of("registrationName", "onPress"))
                 .build();
     }
 
-    private String logoURL = "https://pbs.twimg.com/profile_images/1303766581982437376/GZA5PwNg_400x400.jpg";
+    private String logoURL = "https://www.google.com/logos/doodles/2021/doodle-champion-island-games-august-27-6753651837109005-s.png";
 
     /* Interface Listener to start loading the image if the source is set */
     private interface ImgStartListener {
@@ -60,6 +59,7 @@ public class ReactBowserManager extends SimpleViewManager<ReactImageView> {
         return REACT_CLASS;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected ReactImageView createViewInstance(ThemedReactContext reactContext) {
 
@@ -68,12 +68,18 @@ public class ReactBowserManager extends SimpleViewManager<ReactImageView> {
         final Handler handler = new Handler();
         startDownloading(handler, reactImageView);
 
-        reactImageView.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
+        Log.d("BOWSER", "created");
+
+        reactImageView.setOnTouchListener((View v, MotionEvent ev) -> {
+          if (ev.getAction() == MotionEvent.ACTION_DOWN) {
               WritableMap event = Arguments.createMap();
               event.putString("message", "MyMessage");
-              mCallerContext.getJSModule(RCTEventEmitter.class).receiveEvent(v.getId(), "pressed", event);
+              Log.d("BOWSER", event.toString());
+              reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(v.getId(), "onPress", event);
+              return true;
+          } else {
+              Log.d("BOWSER", "TouchUp");
+              return false;
           }
         });
 

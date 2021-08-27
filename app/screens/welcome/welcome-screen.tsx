@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import { View, ViewStyle, TextStyle, ImageStyle, SafeAreaView, Alert } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import {
@@ -103,7 +103,7 @@ export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> 
           </Text>
           <Text style={TITLE} preset="header" tx="welcomeScreen.readyForLaunch" />
           {/* <Image source={bowserLogo} style={BOWSER} /> */}
-          <BowserView src={"https://frescolib.org/static/logo.png"} style={BOWSER} />
+          <BowserView style={BOWSER} onPress={(str) => Alert.alert("Hello")} />
           <Text style={CONTENT}>
             This probably isn't what your app is going to look like. Unless your designer handed you
             this screen and, in that case, congrats! You're ready to ship.
