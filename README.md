@@ -6,12 +6,12 @@ This is an app I worked on during a React Native Live stream on Twitch.
 
 ## Implemented
 
-[*] Android image view
-[*] Android custom event back to JS
-[*] Android native animation
-[ ] iOS image view
-[ ] iOS custom event back to JS
-[ ] iOS native animation
+* [*] Android image view
+* [*] Android custom event back to JS
+* [*] Android native animation
+* [ ] iOS image view
+* [ ] iOS custom event back to JS
+* [ ] iOS native animation
 
 ## YouTube links of archived streams
 
