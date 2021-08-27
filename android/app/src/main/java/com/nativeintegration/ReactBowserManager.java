@@ -13,6 +13,9 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.image.ReactImageView;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +24,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -88,6 +93,9 @@ public class ReactBowserManager extends SimpleViewManager<ReactImageView> {
                 // Send off the event.
                 sendEvent("onPress", event);
 
+                // Perform animation
+                performFlipAnimation();
+
                 // We handled this event, so return true
                 return true;
             } else {
@@ -122,5 +130,22 @@ public class ReactBowserManager extends SimpleViewManager<ReactImageView> {
                 Log.e("ReactImageManager", "Error : " + e.getMessage());
             }
         }).start();
+    }
+
+    private void performFlipAnimation() {
+        final ObjectAnimator oa1 = ObjectAnimator.ofFloat(mView, "scaleX", 1f, 0f);
+        final ObjectAnimator oa2 = ObjectAnimator.ofFloat(mView, "scaleX", 0f, 1f);
+        oa1.setInterpolator(new DecelerateInterpolator());
+        oa2.setInterpolator(new AccelerateDecelerateInterpolator());
+        oa1.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                oa2.start();
+            }
+        });
+        oa1.setDuration(200);
+        oa2.setDuration(200);
+        oa1.start();
     }
 }
