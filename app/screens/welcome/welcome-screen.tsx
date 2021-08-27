@@ -10,7 +10,7 @@ import {
   GradientBackground,
   AutoImage as Image,
 } from "../../components"
-import { BowserView } from "../../nativeComponents/bowser"
+import { BowserView } from "../../native/bowser"
 import { color, spacing, typography } from "../../theme"
 import { NavigatorParamList } from "../../navigators"
 
@@ -103,7 +103,7 @@ export const WelcomeScreen: FC<StackScreenProps<NavigatorParamList, "welcome">> 
           </Text>
           <Text style={TITLE} preset="header" tx="welcomeScreen.readyForLaunch" />
           {/* <Image source={bowserLogo} style={BOWSER} /> */}
-          <BowserView style={BOWSER} onPress={(str) => Alert.alert("Hello")} />
+          <BowserView style={BOWSER} onPress={(event) => Alert.alert(event.message)} />
           <Text style={CONTENT}>
             This probably isn't what your app is going to look like. Unless your designer handed you
             this screen and, in that case, congrats! You're ready to ship.
